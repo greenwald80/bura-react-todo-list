@@ -2,7 +2,7 @@ import React from "react";
 import TodoListItem from "../todo-list-item";
 import './todo-list.css';
 
-const TodoList = ({ todos }) => {
+const TodoList = ({ todos,onDeleted }) => {
   const elements = todos.map((item) => {
     // return (
     //   <li>
@@ -18,7 +18,7 @@ const TodoList = ({ todos }) => {
     return (
       //using spread operator
       <li key={id} className="list-group-item">
-        <TodoListItem {...itemProps} />
+        <TodoListItem {...itemProps} onDeleted={()=>onDeleted(id)}/>
       </li>
     );
   });
