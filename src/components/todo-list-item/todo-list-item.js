@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./todo-list-item.css";
 
 export default class TodoListItem extends Component {
-  
   //state - добавляю для сохранения состояния
   // constructor(){
   //   super();
@@ -13,6 +12,7 @@ export default class TodoListItem extends Component {
   state = {
     //без использования конструктора (можно в последней версии языка)
     done: false,
+    important: false,
   };
 
   // constructor() {
@@ -23,35 +23,42 @@ export default class TodoListItem extends Component {
   // }
   onLabelClick = () => {
     //using proposal class fields
-   this.setState({
-     done:true
-   });
+    this.setState({
+      done: true,
+    });
+  };
+
+  //используя последний синтаксис полей класса
+  onMarkImportant = () => {
+    this.setState({
+      important: true,
+    });
   };
 
   render() {
-    const { label, important = false } = this.props;
-    const { done } = this.state;
+    const { label } = this.props;
+    const { done, important } = this.state;
     let classnames = "todo-list-item";
+
     if (done) {
+      //если выполнено, то должно быть зачеркнуто
       classnames += " done";
     }
 
-    const style = {
-      color: important ? "steelblue" : "black",
-      fontWeight: important ? "bold" : "normal",
-    };
+    if (important) {
+      //если выделено, то должно быть жирным
+      classnames += " important";
+    }
+
     return (
       <span className={classnames}>
-        <span
-          style={style}
-          className="todo-list-item-label"
-          onClick={this.onLabelClick.bind(this)}
-        >
+        <span className="todo-list-item-label" onClick={this.onLabelClick}>
           {label}
         </span>
         <button
           type="button"
           className="btn btn-outline-success btn-sm float-right"
+          onClick={this.onMarkImportant}
         >
           <i className="fa fa-exclamation" />
         </button>
