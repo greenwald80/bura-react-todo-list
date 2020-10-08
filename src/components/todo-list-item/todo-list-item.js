@@ -23,15 +23,27 @@ export default class TodoListItem extends Component {
   // }
   onLabelClick = () => {
     //using proposal class fields
-    this.setState({
-      done: true,
+    // this.setState({
+    //   done: true,
+    // });
+    this.setState(({done}) => {
+      return {
+        done: !done,
+      };
     });
   };
 
   //используя последний синтаксис полей класса
   onMarkImportant = () => {
-    this.setState({
-      important: true,
+    // this.setState((state) => {
+    //   return {
+    //     important: !state.important,
+    //   };
+    // });
+    this.setState(({important}) => {//используя сразу деструктуризацию из стейта (более лаконично)
+      return {
+        important: !important,
+      };
     });
   };
 
