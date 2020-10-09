@@ -26,7 +26,7 @@ export default class TodoListItem extends Component {
     // this.setState({
     //   done: true,
     // });
-    this.setState(({done}) => {
+    this.setState(({ done }) => {
       return {
         done: !done,
       };
@@ -40,7 +40,8 @@ export default class TodoListItem extends Component {
     //     important: !state.important,
     //   };
     // });
-    this.setState(({important}) => {//используя сразу деструктуризацию из стейта (более лаконично)
+    this.setState(({ important }) => {
+      //используя сразу деструктуризацию из стейта (более лаконично)
       return {
         important: !important,
       };
@@ -48,7 +49,7 @@ export default class TodoListItem extends Component {
   };
 
   render() {
-    const { label,onDeleted } = this.props;
+    const { label, onDeleted } = this.props;
     const { done, important } = this.state;
     let classnames = "todo-list-item";
 
