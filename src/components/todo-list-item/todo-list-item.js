@@ -2,55 +2,55 @@ import React, { Component } from "react";
 import "./todo-list-item.css";
 
 export default class TodoListItem extends Component {
-  //state - добавляю для сохранения состояния
-  // constructor(){
-  //   super();
-  //   this.state={
-  //     done:false
-  //   };
-  // }
-  state = {
-    //без использования конструктора (можно в последней версии языка)
-    done: false,
-    important: false,
-  };
+  // //state - добавляю для сохранения состояния
+  // // constructor(){
+  // //   super();
+  // //   this.state={
+  // //     done:false
+  // //   };
+  // // }
+  // state = {
+  //   //без использования конструктора (можно в последней версии языка)
+  //   done: false,
+  //   important: false,
+  // };
 
-  // constructor() {
-  //   super();
-  //   this.onLabelClick = () => {
-  //     console.log(`Done: ${this.props.label}`);
-  //   };
-  // }
-  onLabelClick = () => {
-    //using proposal class fields
-    // this.setState({
-    //   done: true,
-    // });
-    this.setState(({ done }) => {
-      return {
-        done: !done,
-      };
-    });
-  };
+  // // constructor() {
+  // //   super();
+  // //   this.onLabelClick = () => {
+  // //     console.log(`Done: ${this.props.label}`);
+  // //   };
+  // // }
+  // onLabelClick = () => {
+  //   //using proposal class fields
+  //   // this.setState({
+  //   //   done: true,
+  //   // });
+  //   this.setState(({ done }) => {
+  //     return {
+  //       done: !done,
+  //     };
+  //   });
+  // };
 
-  //используя последний синтаксис полей класса
-  onMarkImportant = () => {
-    // this.setState((state) => {
-    //   return {
-    //     important: !state.important,
-    //   };
-    // });
-    this.setState(({ important }) => {
-      //используя сразу деструктуризацию из стейта (более лаконично)
-      return {
-        important: !important,
-      };
-    });
-  };
+  // //используя последний синтаксис полей класса
+  // onMarkImportant = () => {
+  //   // this.setState((state) => {
+  //   //   return {
+  //   //     important: !state.important,
+  //   //   };
+  //   // });
+  //   this.setState(({ important }) => {
+  //     //используя сразу деструктуризацию из стейта (более лаконично)
+  //     return {
+  //       important: !important,
+  //     };
+  //   });
+  // };
 
   render() {
-    const { label, onDeleted } = this.props;
-    const { done, important } = this.state;
+    const { label, onDeleted, onToggleImportant, onToggleDone,done, important } = this.props;
+    //const { done, important } = this.state;
     let classnames = "todo-list-item";
 
     if (done) {
@@ -65,13 +65,17 @@ export default class TodoListItem extends Component {
 
     return (
       <span className={classnames}>
-        <span className="todo-list-item-label" onClick={this.onLabelClick}>
+        <span className="todo-list-item-label" 
+        // onClick={this.onLabelClick}
+        onClick={onToggleDone}
+        >
           {label}
         </span>
         <button
           type="button"
           className="btn btn-outline-success btn-sm float-right"
-          onClick={this.onMarkImportant}
+          // onClick={this.onMarkImportant}
+          onClick={onToggleImportant}
         >
           <i className="fa fa-exclamation" />
         </button>
