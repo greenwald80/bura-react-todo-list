@@ -5,9 +5,12 @@ import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
 import ItemStatusFilter from "../item-status-filter";
 import TodoList from "../todo-list";
+import ItemAddForm from "../item-add-form";
 import "./app.css";
 
 export default class App extends Component {
+  maxId = 100;
+
   state = {
     todoData: [
       { label: "Item 1", important: false, id: 1 },
@@ -31,15 +34,29 @@ export default class App extends Component {
     });
   };
 
+  addItem = (text) => {
+    const newItem = {
+      label: text,
+      important: false,
+      id: this.maxId++,
+    };
+    this.setState(({ todoData }) => {
+      //todoData.push(newItem);//НЕЛЬЗЯ изменять существующий стэйт в реакте
+      const newArr = [...todoData, newItem]; //добавляет новый элемент в конец существующего массива
+      return { todoData: newArr };
+    });
+  };
+
   render() {
     return (
       <div className="todo-app">
-        <AppHeader />
+        <AppHeader toDo={1} done={3} />
         <div className="top-panel d-flex">
           <SearchPanel />
           <ItemStatusFilter />
         </div>
         <TodoList todos={this.state.todoData} onDeleted={this.deleteItem} />
+        <ItemAddForm onItemAdded={this.addItem} />
       </div>
     );
   }
