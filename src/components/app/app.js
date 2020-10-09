@@ -13,11 +13,23 @@ export default class App extends Component {
 
   state = {
     todoData: [
-      { label: "Item 1", important: false, id: 1 },
-      { label: "Item 2", important: true, id: 2 },
-      { label: "Item 3", important: false, id: 3 },
+      // { label: "Item 1", important: false, id: 1 },
+      // { label: "Item 2", important: true, id: 2 },
+      // { label: "Item 3", important: false, id: 3 },
+      this.createTodoItem("Item 1"),
+      this.createTodoItem("Item 2"),
+      this.createTodoItem("Item 3"),
     ],
   };
+
+  createTodoItem(label) {
+    return {
+      label: label,
+      important: false,
+      done: false,
+      id: this.maxId++,
+    };
+  }
 
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
@@ -35,11 +47,12 @@ export default class App extends Component {
   };
 
   addItem = (text) => {
-    const newItem = {
-      label: text,
-      important: false,
-      id: this.maxId++,
-    };
+    // const newItem = {
+    //   label: text,
+    //   important: false,
+    //   id: this.maxId++,
+    // };
+    const newItem = this.createTodoItem(text);
     this.setState(({ todoData }) => {
       //todoData.push(newItem);//НЕЛЬЗЯ изменять существующий стэйт в реакте
       const newArr = [...todoData, newItem]; //добавляет новый элемент в конец существующего массива
@@ -47,24 +60,72 @@ export default class App extends Component {
     });
   };
 
-  onToggleImportant = (id) => {
-    console.log('onToggleImportant');
+  toggleProperty(arr, id, propName) {
+    const idx = arr.findIndex((el) => el.id === id);
+    //1. update object
+    const oldItem = arr[idx];
+    //создаю новый объект и изменяю в нем одно done значение на обратное
+    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+    //2. construct new array
+    // const newArray = [
+    //   ...arr.splice(0, idx),
+    //   newItem,
+    //   ...arr.splice(idx + 1),
+    // ];
+    //разделяю массив, вставляю новое значение в середину массива
+    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
+  }
+
+  // onToggleDone = (id) => {
+  //   this.setState(({ todoData }) => {
+  //     const idx = todoData.findIndex((el) => el.id === id);
+  //     //1. update object
+  //     const oldItem = todoData[idx];
+  //     const newItem = { ...oldItem, done: !oldItem.done }; //создаю новый объект и изменяю в нем одно done значение на обратное
+  //     //2. construct new array
+  //     const newArray = [
+  //       ...todoData.splice(0, idx),
+  //       newItem,
+  //       ...todoData.splice(idx + 1),
+  //     ]; //разделяю массив, вставляю новое значение в середину массива
+  //     return {
+  //       todoData: newArray,
+  //     };
+  //     // return {
+  //     //   //using external function toggleProperty
+  //     //   todoData: this.toggleProperty(todoData, id, "done"),
+  //     // };
+  //   });
+  // };
+  onToggleDone = (id) => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: this.toggleProperty(todoData, id, "done"),
+      };
+    });
   };
 
-  onToggleDone = (id) => {
-    console.log('onToggleDone');
+  onToggleImportant = (id) => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: this.toggleProperty(todoData, id, "important"),
+      };
+    });
   };
 
   render() {
+    const { todoData } = this.state;
+    const doneCount = todoData.filter((el) => el.done).length;
+    const todoCount = todoData.length - doneCount;
     return (
       <div className="todo-app">
-        <AppHeader toDo={1} done={3} />
+        <AppHeader toDo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
           <SearchPanel />
           <ItemStatusFilter />
         </div>
         <TodoList
-          todos={this.state.todoData}
+          todos={todoData}
           onDeleted={this.deleteItem}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
