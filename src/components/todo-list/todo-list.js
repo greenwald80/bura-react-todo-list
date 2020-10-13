@@ -4,17 +4,7 @@ import "./todo-list.css";
 
 const TodoList = ({ todos, onDeleted, onToggleImportant, onToggleDone }) => {
   const elements = todos.map((item) => {
-    // return (
-    //   <li>
-    //     <TodoListItem label={item.label} important={item.important} />
-    //   </li>
-    // );
-    // return (//the same using spread operator
-    //       <li key={item.id}>
-    //         <TodoListItem {...item} />
-    //       </li>
-    //     );
-    const { id, ...itemProps } = item; //itemProps doesn't have id
+    const { id, ...itemProps } = item; //itemProps имеет все значения, кроме id
     return (
       //using spread operator
       <li key={id} className="list-group-item">
